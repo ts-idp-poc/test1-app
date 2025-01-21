@@ -1,17 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
-kind: Workflow                  # new type of k8s spec
+kind: Workflow
 metadata:
-  generateName: hello-world-    # name of the workflow spec
+  name: hello-world-workflow
   namespace: test1
 spec:
-  entrypoint: hello-world       # invoke the hello-world template
+  serviceAccountName: run-workflow  # Specify the ServiceAccount
+  entrypoint: hello-world
   templates:
-    - name: hello-world         # name of the template
+    - name: hello-world
       container:
-        image: busybox
-        command: [ echo ]
-        args: [ "hello world" ]
-        resources: # limit the resources
-          limits:
-            memory: 32Mi
-            cpu: 100m
+        image: alpine:3.14
+        command: [sh, -c]
+        args: ["echo 'Hello, World!'"]
